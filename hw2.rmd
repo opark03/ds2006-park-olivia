@@ -1,6 +1,6 @@
 ---
 title: "HW 2"
-output: pdf_document
+output: md_document
 date: "2024-01-24"
 ---
 
@@ -12,13 +12,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 > If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6, and 9. The sum of these multiples is 23.Find the sum of all the multiples of 3 or 5 below 1000.
 
-**create a list of numbers 1- 999. then use remainder division to find which integers have 0 remainder. finally, sum the subset of numbers identified in step 2.**
+**First, count a set from 3-1000 by 3s. Then count a set 5-1000 by 5s. Then sum the outputs of both sets.** 
 
 ```{r}
 a <- 1:999
-b <- (a %% 3 == 0) | (a %% 5 == 0)
-d <- a[b]
-sum(d)
+a[(a %% 3 == 0) | (a %% 5 == 0)]
 ```
 
 ## Problem 2
@@ -27,24 +25,14 @@ sum(d)
 
 **Loop through each output to continuously add the last two digits together. Have the function break when 4 million is reached**
 
-```{r}
-fib <- c(1, 1)
-while (fib[length(fib)] < 4000000)
-  {new_fib <- fib[length(fib)] + fib[length(fib) - 1]
-  fib <- c(fib, new_fib)}
-sum(fib[fib %% 2 == 0 & fib < 4000000])
-```
+``{r}``
+
 
 ## Problem 3
 
-> The prime factors of 13195 are 5, 7, 13 and 29. What is the largest prime factor of the number 600851475143?
+> problem
 
 **loop through 600851475143 by dividing each following output by 2. If the output is 0, continue to divide again by two. If not 0, divide by 3; if that output is 0, continue. If not 0, divide by 5. Continue the process stated with each prime number until a final number is reached**
 
-```{r}
-prime_factors <- function(n) {
-  factors <-unique(as.numeric(factor(n)))
-  return(max(factors))
-}
-prime_factors(600851475143)
-```
+``{r}``
+
