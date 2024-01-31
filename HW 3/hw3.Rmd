@@ -1,0 +1,158 @@
+---
+title: "hw3"
+output: html_document
+date: "2024-01-31"
+---
+
+# Question 1
+
+## What is a working directory?
+
+a working directory contains all data, rmd scripts, and generated outputs. Create a folder for each homework assignment and put all relavent files into that folder. For example, for this assignment I have created a folder called "HW3". Once I open the folder, all the files I create will be saved into HW3. I can also use the R studio feature session -> Set working directory -> To source file location. 
+
+## What are the best practices for setting and using the working directory? 
+
+ We work in teams and share code a lot of the time in data science. An absolute file path is something like (c:/Users/Rxb8yt/project/HW3/data/survey.csv). when you write this into the code script, it will not exist in this exact location on another persons device. Therefore, do not use exact file path locations. Instead, use a relative file path (../data/survey/csv) which will create a file path relative to wear the working directory is.(.. means go up a level) 
+
+# Q2
+
+```{r}
+name <- "Olivia Park"
+```
+
+#Q3
+
+```{r}
+ls()
+```
+# Q4
+
+```{r}
+v1 <- c(FALSE, TRUE, FALSE, TRUE, TRUE)
+v2 <- c(1, 2, 3, 4, 5)
+v3 <- c(1.1, 2.2, 3.3, 4.4, 5.5)
+v4 <- c("a", "b", "c", "d", "e")
+```
+
+#Q5
+
+```{r}
+V <- list(v1, v2, v3, v4)
+V
+```
+
+#Q6
+
+```{r}
+str(V)
+```
+
+#Q7
+
+```{r}
+matrix(data = 1:20, nrow = 4, ncol = 5)
+```
+#Q8
+
+```{r}
+seq(22, 44)
+```
+
+#Q9
+
+```{r}
+a <- cbind(1 ,1:10)
+a
+```
+
+#Q10
+
+```{r}
+v3[3]
+```
+
+#Q11
+
+```{r}
+d1 <- read.csv("http://hbiostat.org/data/repo/2.20.Framingham.csv")
+d1[ ,4]
+```
+
+#Q12
+
+```{r}
+d1[5, ]
+
+```
+
+#Q13
+
+```{r}
+d1["bmi"]
+```
+
+#Q14
+The pipe operator pushes the change made in one line forward into the next line so that an aspect of the data frame is altered at once.
+```{r}
+require(dplyr)
+
+# Old way
+sum(log(sqrt(select(d1,age)),base=10))
+
+# OG magrittr pipe
+d1 %>% 
+  pull(age)  %>% 
+  sqrt  %>% 
+  log(base=10)  %>% 
+  sum
+
+d1 %>% 
+  lm(sbp ~ dbp, data = .)  # Use the dot if the piped objects needs to go to an input other than the first
+
+d1 %>% 
+  split(.$sex) %>%  # Can use the input multiple times
+  lapply(function(x){x$age %>% mean})
+
+# New base R pipe
+d1 |> 
+  pull(age) |> 
+  sqrt() |> # Note the parentheses have to be used
+  log(base=10) |> 
+  sum()
+
+d1 |>  
+  lm(sbp ~ dbp, data = _) # Use `_` instead of `.` with new pipe
+
+```
+#Q15
+
+```{r}
+
+prime <- function(x){
+  ps <- primes::generate_primes(min = 2, max = ceiling(sqrt(x)))
+  for(i in ps) if(x %% i == 0) return(FALSE)
+  TRUE
+}
+
+k <- 0
+for(i in 0:9999){
+    phone_number <- 4349240000 + i
+    if(prime(phone_number)) {
+      k <- k + 1
+    }
+}
+k
+```
+
+#Q16
+
+```{r}
+prime_phonenumbers <- c()
+for(i in 0:9999){
+    phone_number <- 4349240000 + i
+    if(prime(phone_number)) {
+    prime_phonenumbers <- c(prime_phonenumbers, phone_number)
+    }
+     }
+prime_phonenumbers
+```
