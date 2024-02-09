@@ -1,0 +1,70 @@
+---
+title: "HW6"
+output: md_document
+date: "2024-02-07"
+---
+# Birthday Question
+
+## 1
+
+The probability is 0.9875. 
+
+## 2 
+
+Set seed is used in this code to control the random number generation.
+
+## 3
+
+R represents the number of times the random class will be generated. For example, if R is 10 then 10 classes of birthdays will be generated and looked through for duplicates.
+
+## 4
+
+This solutions assumes that each day is equally likley for a birthday. Therefore, the code is ignoring the fact that less people give birth on Friday the 13th, it all together ignores leap year, and overall ignores human factors.  
+## 5
+
+They both gave very similar answers fro a class size of 28. the lines on the graph match up very well to the probability from version 1. 
+
+## 6
+
+See graph below
+
+## 7
+
+I think that first_duplicate is returning the first number that produces a duplicate. for example, for 28 the code spit out 11, which means 11 classes had to be randomly produced before a duplicate was found. 
+
+```{r}
+generate_class <- function(class_size){
+  sample(1:365, class_size, replace=TRUE)
+}
+
+birthday_roster <- generate_class(28)
+
+check_birthday <- function(birthday_roster){
+  birthday_roster |> duplicated() |> any()
+  #use sum() or any() command to count up
+}
+
+set.seed(230583)
+R <- 10000
+replicates <- replicate(R, generate_class(28) |> check_birthday())
+replicates
+mean(replicates)
+```
+
+```{r}
+
+R <- 10000
+
+first_duplicate <- function(){
+    sample(1:365, 366, replace=TRUE) |>
+    duplicated() |>
+    which() |>
+    min()
+}
+
+fd1 <- replicate(R, first_duplicate())
+plot(ecdf(fd1), main = "Probability of shared birthday", xlab = "Class size")
+
+c28 <- 0.65
+abline(h=c28, v=28)
+```
