@@ -1,0 +1,55 @@
+---
+title: "HW 7"
+output: html_document
+date: "2024-02-11"
+---
+
+```{r}
+
+library(readr)
+library(dplyr)
+
+url <- "https://tgstewart.cloud/soda.csv"
+class_data <- read_csv(url)
+class_data
+```
+
+# 1
+
+```{r}
+cola_table <- table(class_data$cola)
+cola_table_props <- prop.table(cola_table)
+cola_table_props
+```
+
+#2
+
+```{r}
+sugar_table <- table(class_data$sugar)
+sugar_table_props <- prop.table(sugar_table)
+sugar_table_props
+```
+
+#3
+
+```{r}
+cont_table <- table(class_data$sugar,class_data$cola)
+cont_table_props <- prop.table(cont_table)
+cont_table
+cont_table_props
+```
+
+#4 & 5
+
+```{r}
+require(dplyr)
+require(pander)
+d1 <- read.csv("https://tgstewart.cloud/soda.csv") |>
+  filter(!is.na(cola) & !is.na(sugar))
+descr::CrossTable(
+      d1$sugar
+    , d1$cola
+    , prop.chisq = FALSE
+) |>
+pander(split.table=Inf)
+```
