@@ -3,8 +3,9 @@
 > If the proportions in the contingency table represented probabilities,
 > would drink preference and sugar preference be independent?
 
-No, the probablilities would not be indepedent because two variables are
-being considered together.
+No, the probabilities would not be indepedent because two variables are
+being considered together. If knowing information about one variable
+gives us information about another, then they are not independent.
 
 # 2
 
@@ -21,4 +22,6 @@ This is evident in the fact that the column probability is 50%
 
 This is an example of seeing versus doing. Taking the toxic medicine may
 result in more people experiecning migranes, but it does not mean that
-not taking toxic treatment will decrease mirganes
+not taking toxic treatment will increase mirganes. Therefore, we cannot
+conclude anything about more more toxic treatment because we do not have
+enough information.

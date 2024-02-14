@@ -1,6 +1,6 @@
 ---
 title: "HW8"
-output: md_document
+output: html_document
 date: "2024-02-13"
 ---
 
@@ -17,7 +17,7 @@ There is no association between a preference for cola and regular sugar. This is
 # 3
 >What can you conclude from this data about the effectiveness of the more toxic treatment?
 
-This is an example of seeing versus doing. Taking the toxic medicine may result in more people experiecning migranes, but it does not mean that not taking toxic treatment will decrease mirganes
+This is an example of seeing versus doing. Taking the toxic medicine may result in more people experiecning migranes, but it does not mean that not taking toxic treatment will increase  mirganes. Therefore, we cannot conclude anything about more more toxic treatment because we do not have enough information. 
 
 
 
