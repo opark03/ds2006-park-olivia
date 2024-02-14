@@ -7,7 +7,7 @@ date: "2024-02-13"
 # 1
 > If the proportions in the contingency table represented probabilities, would drink preference and sugar preference be independent?
 
-No, the probablilities would not be indepedent because two variables are being considered together.
+No, the probabilities would not be indepedent because two variables are being considered together. If knowing information about one variable gives us information about another, then they are not independent. 
 
 # 2 
 > Is a preference for Cola positively or negatively or not associated with a preference for regular sugar?
