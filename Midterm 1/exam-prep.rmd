@@ -150,7 +150,7 @@ Please complete the table by calculating the missing cell and marginal probabili
 
 2.4 Among laptop users, what is the probability of randomly selecting a student with a preference Windows?
 
-.25
+.3125
 
 2.5 If you did not know the operating system preference, what would be the probability that a randomly selected student prefers a desktop?
 
@@ -158,11 +158,11 @@ Please complete the table by calculating the missing cell and marginal probabili
 
 2.6 Among MacOS users, what is the probability of randomly selecting a student with a preference for a desktop?
 
-.05
+.083
 
 2.7 One of the big ideas of this course is that **probability is a framework for coherently updating beliefs based on new information and data.** Please explain how the solution in 2.6 represents an update of beliefs from the solution in 2.5.
 
-In question 2.5, we were looking at data in the marginal probability which is independent from other variables. the probability in question 2.6 uses a cell probability with is an and statement. We obtained new information from narrowing down desktop users to those who prefer the MacOS operating system
+In question 2.5, we were looking at data in the marginal probability which is independent from other variables. the probability in question 2.6 uses a column probability with is an and statement. We obtained new information from narrowing down desktop users to those who prefer the MacOS operating system
 
 ### Section 3. Simulation
 
@@ -241,3 +241,19 @@ fd1 <- fd1[!is.na(fd1)]
 plot(ecdf(fd1), main = "Probability that at least 3 share a birthday", xlab = "Class size")
 
 ```
+
+```{r}
+# another method using version 2 of the code using a for loop:
+first_duplicate <- function(k) {
+  cr1 <- sample(1:365, 366*(k-1), replace=TRUE)
+  for(i in 1:length(cr1)) {
+    if(any(table(cr1[1:i]) >= k)) return(i)
+  }
+}
+
+R <- 1000
+fd1 <- replicate(R, first_duplicate(3))
+plot(ecdf(fd1), main = "Probability of shared birthday", xlab = "Class size")
+
+```
+
