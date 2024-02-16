@@ -1,0 +1,243 @@
+---
+title: "DS 2006 Midterm 1 Prep Questions"
+output:
+  rmdformats::html_docco:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+---
+
+**NOTE:** The `.rmd` version of the file is available here: [(link)](https://tgstewart.cloud/midterm1-prep.rmd)
+
+## Instructions
+
+Please prepare reponses/solutions for the following questions.  On the day of the exam, you will be given a new set of questions.  You will use the solutions you've prepared for this exam during the exam.  
+
+During the exam, you will also be permitted to access the internet for publicly available content.  You will not be allowed to communicate with anyone via the internet or any other means during the exam. This includes, but is not limited to: 
+
+* No messaging, emailing, or using social media to contact others. 
+* No posting questions or seeking answers on forums, chat rooms, or any collaborative platforms. 
+* No sharing or discussing exam content with peers through any online or electronic medium.
+
+You may **NOT** discuss any aspect of the exam or prep questions without other than the instructor or TA.  You may **NOT** share code or documents.
+
+## Submission instructions
+
+1.  Within your course repo, create a folder called `Midterm1`
+1.  Within the folder, create the script file `exam-prep.rmd` with your solutions.  Create a rendered report in `.md` or `.html` output.
+1. Add, commit, and push to your repo on github.com.
+
+## Questions
+
+Exam questions are organized into sections cooresponding to the learning outcomes of the course.  
+
+### Section 1. Tools of the data scientists
+
+>Learning objective: Use the tools of data scientists, including
+>
+>* R
+>* IDE (Rstudio or VScode)
+>* Git
+>* Github
+>* Markdown
+>* Rmarkdown
+>* Rivanna
+
+>Learning objective:  Implement best practices, including
+>
+>* Reproducible reports
+>* Working directory
+>* Relative file paths
+
+
+1.1 What is reporducible report?
+
+A reproducible report is a document set of documents that contain a record of all of the steps taken to generate a final report. This makes it easy to copy, understand, and share code in the future. 
+
+1.2 What is the working directory?
+
+The working directory is the location one your computer where R reads and writes files. You can set your wokring directory so that all documents associated with a project are saved in the same location. you can determine your working directory with getwd(). Mine currently is "/Users/oliviapark/Documents/GitHub/ds2006-park-olivia/Midterm 1".
+
+1.3 What is the difference between Markdown and Rmarkdown?
+
+markdown is a coding language to produce writing. R markdown is an extension specifcally for R, and allows us to include code and text into one document. 
+
+1.4 What is the difference between Git and Github?
+
+Git is a control system that allows us to track changes made to our code. Github is a service to host git repositories. In other words, Github is a code sharing platform that utilizes git. 
+
+1.5 What is the difference between R and Rstudio/VScode?
+
+R is a coding language, whereas Rstudio and VScode are IDEs where R code can be written and executed. 
+
+1.6 The following is a schematic of a project folder, with subfolders and files.
+
+```
+project
+│
+├───code
+│       script.rmd
+│
+├───data
+│       survey-responses.csv
+│
+└───docs
+```
+
+Supposing the `code` subfolder is the designated working directory, write the command to be included in the `script.rmd` file which will read the `survey-responses.csv` data, avoiding absolute file paths?
+
+the file path would be ../data/survey-responses.csv
+to read this file, the command would be: `read.csv("../data/survey-responses.csv")`
+
+1.7  What does it mean to render a markdown file?
+
+When a markdown file is rendered, all of the markdown syntax is converted into a visual document, in the form of a html or pdf document, that displays text in the way we are familiar with. 
+
+1.8 The following error was generated in R.  How might the error be resolved?
+
+```
+Error in loadNamespace(x) : there is no package called ‘data.table’
+```
+to resolve this error, we must first install the package: `install.packages("data.table")`
+then we can open the library:
+`library(data.table)`
+
+1.9 What is a package library?
+
+A package library is a set of software that extend the functions of a programing langauge.  
+
+1.10 What would happen if the command `install.packages("data.table")` was included in an `.R` or `.Rmd` script?  Is there a better practice?
+
+after a package is installed, the `install.packages("data.table")` should be commented out. we can also use the `require` function is we want it to transfer over into our rendered markdown document as code. 
+
+1.11 The following error was generated in R.  How might the error be resolved?
+
+```
+Error in rcs() : could not find function "rcs"
+```
+you should determine which library the `rcs()` function is found in. then you should install the package and open the library.  
+
+1.12 List the possible output formats from an Rmarkdown file.
+.html, .pdf, .docx, .rmd, .md.  
+
+### Section 2. Probability
+
+>Learning objective: Compare and contrast different definitions of probability, illustrating differences with simple examples
+
+>Learning objective: Express the rules of probability verbally, mathematically, and computationally,
+* AND, OR, complement, total probability
+* simulation error (relative and absolute)
+
+2.1 What is probability?  Please illustrate with examples of different types of probability.
+
+Probability is the measure of the likleyhood that something will occur. There are three main types of probabilties. The first type is a frequency probability, which measures the long-run average of an events occurence. an example would be if I flip a coin some number of times, the proportion of times is lands on tails is the probability of landing on tails. The second type is an expression of belief, which communicates the degree of certainty about something. An example is a jury saying that there is a 90% chance that the defendant is guilty. The final type of probability is a data informed belief, which starts with a belief and uses data to update and validate that belief. This lies between the two previous categories, and an example is scientist's claiming that a medicine has an 75% chance of curing an illness.   
+
+2.2 Suppose the following table represents operating system and computer type preferences of UVA students.
+
+| Product | MacOS | Windows |     |
+|:--------|:-----:|:-------:|:---:|
+| Laptop  | .55   |.25      |  .8 |
+| Desktop |.05    |   .15   | .2  |
+|         |   .6  |  .4     | 1   |
+
+Please complete the table by calculating the missing cell and marginal probabilities.
+
+2.3 What is the probability that a randomly selected UVA student has a preference for a Mac OS laptop?
+
+.55
+
+2.4 Among laptop users, what is the probability of randomly selecting a student with a preference Windows?
+
+.25
+
+2.5 If you did not know the operating system preference, what would be the probability that a randomly selected student prefers a desktop?
+
+.2
+
+2.6 Among MacOS users, what is the probability of randomly selecting a student with a preference for a desktop?
+
+.05
+
+2.7 One of the big ideas of this course is that **probability is a framework for coherently updating beliefs based on new information and data.** Please explain how the solution in 2.6 represents an update of beliefs from the solution in 2.5.
+
+In question 2.5, we were looking at data in the marginal probability which is independent from other variables. the probability in question 2.6 uses a cell probability with is an and statement. We obtained new information from narrowing down desktop users to those who prefer the MacOS operating system
+
+### Section 3. Simulation
+
+>Learning objective: Use probability models to build simulations of complex real world processes to answer research questions
+
+3.1 What is simulation error?
+
+a simulation error occurs when there are discrepancies between modeled data and actuality. and example of a simulation error occurs within the birthday problem. our model assumes each day of the year had an equal likely hood of being a birthday. However, we know from birth data that there are fewer births on friday the 13ths, more on january 1st, and we ignored leap year. 
+
+3.2 In class and homework, you solved the birthday problem.  The script we developed in class to solve the problem is below.  Please change the code to answer a slightly different version of the birthday problem:
+
+**In a class of size 55, what is the probability that at least 3 individuals will share a birthday?**
+
+```{r}
+generate_class <- function(class_size){
+  sample(1:365, class_size, replace=TRUE)
+}
+
+generate_class(55) |>
+  table()
+
+# use the table() function to sort the number of birthdays per day, then use the max() function to choose the number to times there are three or more birthdays on a single day
+
+check_birthday <- function(class){
+  class |> 
+  table() |>
+  max() >= 3
+    
+}
+
+set.seed(230583)
+R <- 10000
+replicates <- replicate(R, generate_class(55) |> check_birthday())
+mean(replicates)
+```
+
+3.3 The code below comes from HW 6 which simulated the original birthday problem. Please explain the version 2 code from HW 6.  Why does it give a solution to the original birthday problem?
+
+This code is able to give a solution to the birthday problem by creating random sample classes, then searching for duplicates with the duplicated() function. Then, the which() function gives the indices for the instances when there are two people with the same birthday. The min() function chooses the first index for which is a duplicate birthdays. The graph displays how probability of a duplicate birthdays increases as class size increases. 
+
+```{r}
+# Version 2 from HW 6
+first_duplicate <- function(){
+    sample(1:365, 366, replace=TRUE) |>
+    duplicated() |>
+    which() |>
+    min()
+}
+
+R <- 10000
+fd1 <- replicate(R, first_duplicate())
+plot(ecdf(fd1), main = "Probability of shared birthday", xlab = "Class size")
+```
+
+3.4   Generate a figure with class size on the x-axis, and the probability of a triply-shared birthday on the y-axis.  (Hint: You may want to use your solution from the earlier problem.  Or, you may want to alter the *version 2* code from HW6.)
+
+```{r}
+# use variables instead of piping |> in order to use a conditional to go through each instance created.
+first_duplicate <- function(){
+    generate_class <- sample(1:365, 366, replace=TRUE)
+    birthday_counts <- table(generate_class)
+    # use the table function again to group birthdays 
+    triple <- which(birthday_counts >= 3)
+    # use which function to get indices when there are 3 or more of the same birthdays
+    if (length(triple) > 0) {
+        return(min(triple))
+    } else {
+        return(NA)
+    }
+    # use a conditional to go through the instances. the min() function is used again to get the index of the first instance that there are 3 of the same birthdays. If there are not 3 or more duplicates, then NA will be returned 
+}
+
+R <- 10000
+fd1 <- replicate(R, first_duplicate())
+fd1 <- fd1[!is.na(fd1)] 
+plot(ecdf(fd1), main = "Probability that at least 3 share a birthday", xlab = "Class size")
+
+```
