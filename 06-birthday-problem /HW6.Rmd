@@ -1,12 +1,29 @@
 ---
 title: "HW6"
-output: md_document
+output: html_document
 date: "2024-02-07"
 ---
 # Birthday Question
 
 ## 1
+```{r}
+generate_class <- function(class_size){
+  sample(1:365, class_size, replace=TRUE)
+}
 
+birthday_roster <- generate_class(55)
+
+check_birthday <- function(birthday_roster){
+  birthday_roster |> duplicated() |> any()
+  #use sum() or any() command to count up
+}
+
+set.seed(230583)
+R <- 10000
+replicates <- replicate(R, generate_class(55) |> check_birthday())
+replicates
+mean(replicates)
+```
 The probability is 0.9875. 
 
 ## 2 
@@ -30,7 +47,7 @@ See graph below
 
 ## 7
 
-I think that first_duplicate is returning the first number that produces a duplicate. for example, for 28 the code spit out 11, which means 11 classes had to be randomly produced before a duplicate was found. 
+I think that first_duplicate is returning the first number that produces a duplicate. for example, for 28 the code spit out 11, which means the first class had 11 students when a duplicate birthday occured. 
 
 ```{r}
 generate_class <- function(class_size){
