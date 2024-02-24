@@ -97,7 +97,7 @@ home
     │
     └─── docs
 ```
-
+The mistake that was made was that files were being saved on the desktop rather than in a folder. 
 This could be fixed by setting your working directory as the project folder. You can you this with the code `setwd()` or by clicking "session" \> "set working directory" \> "To source file location". You can then check that your working directory is correct by using the code `getwd()`. for example, when I check this document I get back "/Users/oliviapark/Documents/GitHub/ds2006-park-olivia/Midterm 1".
 
 1.3 [4 pts] The contents of `script.md` are below. What does the final line of the file do?
@@ -117,10 +117,11 @@ This could be fixed by setting your working directory as the project folder. You
 ![](test_files/figure-markdown_strict/birthday-probs-1.png)
 ```
 The final line of code would save the figure created by the previous code as a .png. 
+this final line is the markdown syntax for insert figure. the square brackets display the alternative text that would be read by a screen reader. 
 
 1.4 [4 pts] The report `script.md` is a text file, and consequently does not show images when viewed in a text editor. How does one view the report so that is shows the figures?
 
-You should render it as an .html document in order to be able to see figures and pictures.
+You should render it as an .html document in order to be able to see figures and pictures. you could also open with a markdown render software. github will also automatically render the file. 
 
 1.5 [4 pts] The following error was generated in R. How might the error be resolved?
 
@@ -170,6 +171,7 @@ P(WidgetA) = 4/7 = .5714
 
 2.4 [8 pts] How would you update the probability from 2.3 if you knew the widget was defective? Write the solution using mathematical notation, as in P(???) = ???.
 
+Since you know that it was deffective for sure, you use the conditional row probability. the cell probability would be used if both were indeterminate. 
 P(Defective&WidgetA) = .057
 
 ### Section 3. Simulation
@@ -184,8 +186,15 @@ widgets <- function(R){
     defect <- rbinom(R,1,0.1*(machine=="A")+0.01*(machine=="B")+0.001*(machine=="C"))
     data.frame(machine=machine, defect=defect)
 }
-
-# in theory would use code from homework eight and use this fucntion to complete - I tired using the pander package and plugging in this fucntion to the CrossTable but I could not leave in the code when I uploaded so I took it out
+# you must plug a number in to generate an ouput
+widgets(150000)[,2:1] |> table() |> proportions() |> addmargins()
+# how to use format from homework 8 to complete
+df1 <- widgets(100000)
+descr::CrossTable(
+      df1$defect
+    , df1$machine
+    , prop.chisq = FALSE
+) 
 ```
 
 3.2 [8 pts] What is simulation error for P(machine A & defective)? (Hint: take the difference.)

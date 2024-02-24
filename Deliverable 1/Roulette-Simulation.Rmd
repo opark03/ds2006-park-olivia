@@ -1,0 +1,246 @@
+---
+title: "Roulette Simulation"
+output: html_document
+date: "2024-02-21"
+---
+
+# Olivia Park's Blog Post: The "Mind" Behind the Martingale Wager
+
+## Introduction
+> In todays blog post, I will be examining the legitimacy of a specifc roulette strategy, The Martingale Wager, using a simulation. This simulation will utilize the PPR framework, which includes parameters, processes, and properties, while also demonstrating what happens over a series of replications. In this roulette simulations, the parameters will be our starting budget, maximum wager, maximum number of plays, and our winning threshold for stopping. Here is an example of thresholds in which we will be examining with todays simulation: 
+
+```
+max_games <- 1000
+starting_budget <- 200
+winning_threshold <- 300
+max_wager <- 100
+```
+>The processes will include the spin of the roulette wheel and the wager placed, and they will be simulated using a series of functions. I will explain each of these functions in detail below. The property being considered is the profit and loss made by the player after a series of rounds. Now that each piece of the puzzle had been explained, I will dive into the workings of the functions used to mimic the processes in roulette. 
+
+## Process: Single Spin
+>This function mimics a single spin of a roulette wheel considering the 18/38 probability of red, 18/38  probability of black, and 2/38 probability of green. The output is one of these colors.
+
+```{r}
+# mimics the single spin of the roulette wheel
+single_spin <- function(){
+  possible_outcomes <- c(rep("red",18), rep("black",18), rep("green",2))
+  sample(possible_outcomes, 1)
+}
+```
+
+## Process: Martingale Wager Function
+>This Function creates a wage based on the outcome of the previous spin . We must input our parameters and then this function will determine our wage based on the outcome of the last spin. It will bet 1 if the last spin was red, and *2 the previous bet if black or green.
+
+```{r}
+martingale_wager <- function(
+    previous_wager
+  , previous_outcome
+  , max_wager
+  , current_budget
+){
+  if(previous_outcome == "red") return(1)
+  min(2*previous_wager, max_wager, current_budget)
+}
+```
+
+## Process: One Play
+> This function combines the two previous functions. It uses the previous ledger parameters as input and then updates the game index and starting budget based on the spin and wager. The final output will be our new set of parameters (game index, new budget, wager) for the next round.
+
+```{r}
+one_play <- function(previous_ledger_entry, max_wager){
+  # Create a copy of the input object that will become the output object
+  #updates the game index and starting budget
+  out <- previous_ledger_entry
+  out[1, "game_index"] <- previous_ledger_entry[1, "game_index"] + 1
+  out[1, "starting_budget"] <- previous_ledger_entry[1, "ending_budget"]
+  out[1, "wager"] <- martingale_wager(
+    previous_wager = previous_ledger_entry[1, "wager"]
+    , previous_outcome = previous_ledger_entry[1, "outcome"]
+    , max_wager = max_wager
+    , current_budget = out[1, "starting_budget"]
+  )
+  out[1, "outcome"] <- single_spin()
+  out[1, "ending_budget"] <- out[1, "starting_budget"] + 
+    ifelse(out[1, "outcome"] == "red", +1, -1)*out[1, "wager"]
+  return(out)
+}
+```
+
+## Process: Stopping Rule
+> This functions takes into consideration the ending budget, which can either reach 0 or the winning threshold, and the maximum number of games that can be played. We Will include this function into the following function to ensure the rounds stop when one of these parameters is reached. 
+
+```{r}
+stopping_rule <- function(
+  ledger_entry
+  , winning_threshold
+){
+  ending_budget <- ledger_entry[1, "ending_budget"]
+  if(ending_budget <= 0) return(TRUE)
+  if(ending_budget >= winning_threshold) return(TRUE)
+  FALSE
+}
+```
+## Process: One Series
+>This function mimics a series of rounds of roulette by combining a series of plays based on the previous outcomes and ending budget information. We start with an index of 0 to initialize the ledger, and then we create an empty data frame that the parameters can be imputed. We use NA and then the type so that the data frame is specific. We then use a loop to simulate several rounds being played and new ledger rows being created. The loop includes the stopping rule so that new ledgers stop being produced when the stopping rule function is satisfied. 
+
+
+```{r}
+one_series <- function(
+  max_games, starting_budget, winning_threshold, max_wager
+){
+  # Initialize ledger
+  ledger <- data.frame(
+      game_index = 0:max_games
+    , starting_budget = NA_integer_
+    , wager = NA_integer_
+    , outcome = NA_character_
+    , ending_budget = NA_integer_
+  )
+  ledger[1, "wager"] <- 1
+  ledger[1, "outcome"] <- "red"
+  ledger[1, "ending_budget"] <- starting_budget
+  for(i in 2:nrow(ledger)){
+    #browser()
+    ledger[i,] <- one_play(ledger[i-1,], max_wager)
+    if(stopping_rule(ledger[i,], winning_threshold)) break
+  }
+  # Return non-empty portion of ledger
+  ledger[2:i, ]
+}
+```
+
+## Determining the Property: Profit 
+> This function calculates the property of the simulation, which is profit or losses. It uses the final ledger information and starting budget to determine how much money a player lost or gained over the series of rounds.
+
+```{r}
+profit <- function(ledger){
+  n <- nrow(ledger)
+  profit <- ledger[n, "ending_budget"] - ledger[1, "starting_budget"]
+  return(profit)
+}
+```
+
+## Property: Longterm profits and Losses
+> Below, I have displayed a grpah or the profits and losses of players over a number of games. As is evident in the graph, the Martingale Wager does not always result in a net profit for the players. 
+
+```{r}
+max_games <- 100
+starting_budget <- 200
+winning_threshold <- 300
+max_wager <- 100
+
+
+R <- 100 # number of replicates
+output <- rep(NA, R)
+for(r in 1:R){
+  output[r] <- 
+    one_series(max_games, starting_budget, winning_threshold, max_wager) |>
+    profit()
+}
+
+plot(output, type = "l", main = "Profits Over Series of Games", xlab = "Game Index", ylab = "Profit")
+```
+
+## Property: Example Looser and Winner
+> Below are examples of players bugets throught their rounds. The first player looses, while the other player wins. These display how wins and losses can occur for players, even when we keep all of the parameters constant. 
+
+```{r}
+require(magrittr)
+
+par(cex.axis=2, cex.lab = 2, mar = c(8,8,2,2), bg = rgb(222, 235, 247, max = 255))
+set.seed(1)
+ledger <- one_series(100,200 , 300, 100)
+plot(ledger[,c(1,5)], type = "l", lwd = 5, xlab = "Game Index", ylab = "Budget", main = "Looser example")
+
+
+
+par(cex.axis=2, cex.lab = 2, mar = c(8,8,2,2), bg = rgb(222, 235, 247, max = 255))
+set.seed(2)
+l2 <- one_series(100,200 ,300, 100)
+plot(l2[,c(1,5)], type = "l", lwd = 5, xlab = "Game Index", ylab = "Budget", main = "Winner example")
+
+```
+
+## Changing A Parameter: Average Profit as a function of Winning Threshold
+> what happens when we change a parameter? The code below uses the simulation processes from above and alters it so that we can see how changing the winning threshold parameter changes the averge profit. This code calcuates the average profit at a number of winning tresholds while leaving the other parameters constant. As we can see in the graph, profit decreases overall as our desire to leave with more money increases. Also note that this code is very inefficient so creating the graoh from all of the individual points is a slow process.
+
+```{r}
+
+max_games <- 1000
+starting_budget <- 200
+max_wager <- 100
+
+winning_thresholds <- seq(100, 500, by = 50)
+
+# used to keep each individual profit calculation based on wager
+average_profits <- numeric(length(winning_thresholds))
+
+# modify code from above to produce an output that we can graph
+for (i in seq_along(winning_thresholds)) {
+    winning_threshold <- winning_thresholds[i]
+    output <- rep(NA, R)
+    for (r in 1:R) {
+        output[r] <- profit(one_series(max_games, starting_budget, winning_threshold, max_wager))
+    }
+    average_profits[i] <- mean(output)
+}
+
+graph_info <- data.frame(
+    Winning_Threshold = winning_thresholds,
+    Average_Profit = average_profits
+)
+
+plot(graph_info$Winning_Threshold, graph_info$Average_Profit, type = "l", lwd = 5, xlab = "winning treshold", ylab = "average profit", main = "how does average profit change as a function of winning treshold?") 
+
+```
+## Changing A Parameter: Average number of Games Played Before Stopping
+> The following code uses a more efficient system to produce a graph that shows the average number of games played before reaching a stop. This fucntion uses the parameters set by the stopping function that is integrated into the one series. The graph displays how the average number of games changes with the starting budget, and according to the graph more games can be played with a higher budget. 
+
+```{r}
+require(magrittr)
+martingale_wager <- function(
+    previous_wager
+  , previous_outcome
+  , max_wager
+  , current_budget
+){
+  if(previous_outcome == 1) return(1)
+  min(2*previous_wager, max_wager, current_budget)
+}
+
+
+profit <- function(l1) l1[nrow(l1),4] - l1[1,1]
+
+one_series <- function(ng, sb, wt, mw){
+# ng = max number of spins
+# sb = starting budget
+# wt = ending budget (starting budget + winning threshold)
+# mw = max wager
+  l1 <- matrix(NA_integer_,nrow=ng,ncol=4)
+  l1[,3] <- rbinom(ng,1,18/38)
+  l1[1,1] <- sb
+  l1[1,2] <- 1
+  l1[1,4] <- ifelse(l1[1,3]==1, sb + 1, sb - 1)
+
+  for(i in 2:ng){
+    w <- martingale_wager(l1[i-1,2], l1[i-1,3], mw, l1[i-1,4])
+    e <- ifelse(l1[i,3]==1, l1[i-1,4] + w, l1[i-1,4] - w)
+    s <- e <= 0 | e >= wt
+    l1[i,c(1,2,4)] <- c(l1[i-1,4], w, e)
+    if(s) break
+  }
+  l1[1:i,]
+}
+
+sb <- seq(50, 500, by = 50)
+ng <- 0*sb
+for(i in 1:length(sb)){
+ ng[i] <- replicate(5000, one_series(100,sb[i],sb[i] +100,50) |> nrow()) |> mean()
+}
+
+plot(sb, ng, type = "l", xlab = "Starting Budget", ylab="Average Number of Games", main = "Average Number of Games Played Before Stopping at each Starting Budget")
+
+```
+
+## Conclusion and Limitations
+> Our simulation shows that the martingale wager can be a sucessful strategy under different sets of parameters. However, the simulation demonstrates that over a number of rounds and games losses are possible. The simulation itself also has its limitations. For example, the stopping function does not consider the fact the people tend to act irationally around gambling, so someone might not stop when they reach their winning treshold or loose their starting budget. Additionally, the single spin function assumes each roulette spin is fair, and ignored the chances that it is rigged by the house. Finally, the simulation fails to consider that the parameters could change from outside factors throughout the game, such as a loan to increase budget or a decision to play more games. The code itself does not perform any statistical analysis one the effectiveness of the martgingale wager, which is another limitation of this simulation. Overall, this simulation shows that gambling can result in large amounts of money loss and players should always be careful when relaying on any strategy. 
