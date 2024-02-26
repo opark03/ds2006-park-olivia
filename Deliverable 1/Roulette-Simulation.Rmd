@@ -193,6 +193,7 @@ graph_info <- data.frame(
 plot(graph_info$Winning_Threshold, graph_info$Average_Profit, type = "l", lwd = 5, xlab = "winning treshold", ylab = "average profit", main = "how does average profit change as a function of winning treshold?") 
 
 ```
+
 ## Changing A Parameter: Average number of Games Played Before Stopping
 > The following code uses a more efficient system to produce a graph that shows the average number of games played before reaching a stop. This fucntion uses the parameters set by the stopping function that is integrated into the one series. The graph displays how the average number of games changes with the starting budget, and according to the graph more games can be played with a higher budget. 
 
