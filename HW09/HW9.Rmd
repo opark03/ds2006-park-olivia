@@ -1,0 +1,60 @@
+---
+title: "Homework 9"
+output: html_document
+date: "2024-02-26"
+---
+
+# 1
+
+Add up cell probabilties
+```{r}
+one <- .08 + .18 + .11 + .19 
+one
+```
+
+# 2
+
+Calculate the conditional row probability 
+```{r}
+two <- .11 /( .11 + .19) 
+two
+```
+
+# 3
+
+Add up all cells where statement is true
+```{r}
+three <- .03 +.11 +.18 + .11 + .19 +.17 
+three
+```
+# 4 
+
+conditional column probability
+```{r}
+Four <- .08 / (.03+.08+.11+.13)
+Four
+```
+# 5
+```{r}
+Probability <- 1 - (364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365 * 354/365)
+Probability
+```
+```{r}
+generate_class <- function(class_size){
+  sample(1:365, class_size, replace=TRUE)
+}
+
+birthday_roster <- generate_class(11)
+
+check_birthday <- function(birthday_roster){
+  birthday_roster |> duplicated() |> any()
+  #use sum() or any() command to count up
+}
+
+set.seed(230583)
+R <- 10000
+replicates <- replicate(R, generate_class(11) |> check_birthday())
+replicates
+mean(replicates)
+```
+> The probabilities are pretty close but not exact. The forumla outputs .1670 and the simulation outputs .1492
