@@ -36,7 +36,7 @@ Four
 ```
 # 5
 ```{r}
-Probability <- 1 - (364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365 * 354/365)
+Probability <- 1 - (365/365 * 364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365)
 Probability
 ```
 ```{r}
@@ -57,4 +57,4 @@ replicates <- replicate(R, generate_class(11) |> check_birthday())
 replicates
 mean(replicates)
 ```
-> The probabilities are pretty close but not exact. The forumla outputs .1670 and the simulation outputs .1492
+> The probabilities are pretty close but not exact. The forumla outputs .1411 and the simulation outputs .1492

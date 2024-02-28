@@ -36,10 +36,10 @@ conditional column probability
 
 # 5
 
-    Probability <- 1 - (364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365 * 354/365)
+    Probability <- 1 - (365/365 * 364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365)
     Probability
 
-    ## [1] 0.1670248
+    ## [1] 0.1411414
 
     generate_class <- function(class_size){
       sample(1:365, class_size, replace=TRUE)
@@ -897,4 +897,4 @@ conditional column probability
     ## [1] 0.1492
 
 > The probabilities are pretty close but not exact. The forumla outputs
-> .1670 and the simulation outputs .1492
+> .1411 and the simulation outputs .1492

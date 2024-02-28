@@ -385,9 +385,9 @@ Four</code></pre>
 </div>
 <div id="section-4" class="section level1">
 <h1>5</h1>
-<pre class="r"><code>Probability &lt;- 1 - (364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365 * 354/365)
+<pre class="r"><code>Probability &lt;- 1 - (365/365 * 364/365 * 363/365 * 362/365 * 361/365 * 360/365 * 359/365 * 358/365 * 357/365 * 356/365 * 355/365)
 Probability</code></pre>
-<pre><code>## [1] 0.1670248</code></pre>
+<pre><code>## [1] 0.1411414</code></pre>
 <pre class="r"><code>generate_class &lt;- function(class_size){
   sample(1:365, class_size, replace=TRUE)
 }
@@ -1241,7 +1241,7 @@ replicates</code></pre>
 <pre><code>## [1] 0.1492</code></pre>
 <blockquote>
 <p>The probabilities are pretty close but not exact. The forumla outputs
-.1670 and the simulation outputs .1492</p>
+.1411 and the simulation outputs .1492</p>
 </blockquote>
 </div>
 
