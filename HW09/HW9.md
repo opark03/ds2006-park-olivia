@@ -29,10 +29,10 @@ Add up all cells where statement is true
 
 conditional column probability
 
-    Four <- .08 / (.03+.08+.11+.13)
-    Four
+    pa <- 0.03+0.08+0.11+0.13 #margin
+    (0.03+0.08)/pa
 
-    ## [1] 0.2285714
+    ## [1] 0.3142857
 
 # 5
 
@@ -898,3 +898,54 @@ conditional column probability
 
 > The probabilities are pretty close but not exact. The forumla outputs
 > .1411 and the simulation outputs .1492
+
+# factorial function - wont work with formula because numbers are too big - use logs and exponents
+
+    k <- 11
+    1 - exp(lfactorial(365) - lfactorial(365 - k) - k*log(365))
+
+    ## [1] 0.1411414
+
+# when running this code, we can see that the anaylitical soultion and code matches up perfectly
+
+    R <- 10000
+
+    first_duplicate <- function(){
+        sample(1:365, 366, replace=TRUE) |>
+        duplicated() |>
+        which() |>
+        min()
+    }
+
+    fd1 <- replicate(R, first_duplicate())
+    plot(ecdf(fd1), main = "Probability of shared birthday", xlab = "Class size")
+
+    k <- 11
+    a <- 1 - exp(lfactorial(365) - lfactorial(365 - k) - k*log(365))
+    abline(h=a, v=11)
+
+    bp <- function(k) 1 - exp(lfactorial(365) - lfactorial(365 - k) - k*log(365))
+    cs1 <- 1:80
+    bp1 <- bp(cs1)
+    lines(cs1, bp1, col = "red", lwd = 4)
+
+![](HW9_files/figure-markdown_strict/unnamed-chunk-8-1.png)
+
+    ecdf(fd1)(cs1) - bp1
+
+    ##  [1] -2.726708e-13 -3.397260e-04 -9.041659e-04 -3.155912e-03 -3.435574e-03
+    ##  [6] -2.962484e-03 -4.635703e-03 -4.135292e-03 -4.823834e-03 -4.648178e-03
+    ## [11] -6.141378e-03 -8.924789e-03 -9.410275e-03 -1.080251e-02 -1.260132e-02
+    ## [16] -8.504005e-03 -7.407665e-03 -7.511418e-03 -6.518526e-03 -8.238384e-03
+    ## [21] -6.788335e-03 -4.895308e-03 -6.997234e-03 -6.044258e-03 -4.799704e-03
+    ## [26] -2.540820e-03 -3.592823e-04  1.938528e-03 -3.685375e-04 -2.016243e-03
+    ## [31] -3.854634e-03 -5.547528e-03 -6.371854e-03 -5.616865e-03 -5.783239e-03
+    ## [36] -3.882106e-03 -1.034008e-03 -7.678211e-04 -1.019664e-03  1.368190e-03
+    ## [41] -6.516115e-04 -1.230472e-03 -9.228557e-04 -1.485369e-03 -1.175899e-03
+    ## [46] -2.052843e-03 -1.574403e-03 -1.397973e-03 -9.796093e-04 -4.735796e-04
+    ## [51] -1.319933e-04 -1.104509e-03 -4.381135e-04 -4.769628e-04 -4.622888e-04
+    ## [56] -6.323549e-04 -4.224593e-04 -5.649794e-04 -6.894484e-04 -3.226609e-04
+    ## [61] -1.887988e-04 -1.095749e-04 -4.386831e-06  1.095210e-04  1.689269e-05
+    ## [66] -9.570464e-05  5.995702e-05  2.736087e-04  3.633369e-05  4.042403e-05
+    ## [71]  7.924682e-05  1.471194e-04  3.919444e-05 -4.864444e-05 -1.987817e-05
+    ## [76]  1.225625e-04  7.622076e-05  1.390454e-04  1.093316e-04  8.566805e-05

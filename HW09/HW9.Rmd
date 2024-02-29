@@ -1,6 +1,6 @@
 ---
 title: "Homework 9"
-output: html_document
+output: md_document
 date: "2024-02-26"
 ---
 
@@ -31,8 +31,8 @@ three
 
 conditional column probability
 ```{r}
-Four <- .08 / (.03+.08+.11+.13)
-Four
+pa <- 0.03+0.08+0.11+0.13 #margin
+(0.03+0.08)/pa
 ```
 # 5
 ```{r}
@@ -58,3 +58,38 @@ replicates
 mean(replicates)
 ```
 > The probabilities are pretty close but not exact. The forumla outputs .1411 and the simulation outputs .1492
+
+# factorial function - wont work with formula because numbers are too big - use logs and exponents
+```{r}
+k <- 11
+1 - exp(lfactorial(365) - lfactorial(365 - k) - k*log(365))
+```
+
+
+# when running this code, we can see that the anaylitical soultion and code matches up perfectly
+
+```{r}
+R <- 10000
+
+first_duplicate <- function(){
+    sample(1:365, 366, replace=TRUE) |>
+    duplicated() |>
+    which() |>
+    min()
+}
+
+fd1 <- replicate(R, first_duplicate())
+plot(ecdf(fd1), main = "Probability of shared birthday", xlab = "Class size")
+
+k <- 11
+a <- 1 - exp(lfactorial(365) - lfactorial(365 - k) - k*log(365))
+abline(h=a, v=11)
+
+bp <- function(k) 1 - exp(lfactorial(365) - lfactorial(365 - k) - k*log(365))
+cs1 <- 1:80
+bp1 <- bp(cs1)
+lines(cs1, bp1, col = "red", lwd = 4)
+
+ecdf(fd1)(cs1) - bp1
+
+```
