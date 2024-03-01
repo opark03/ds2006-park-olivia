@@ -1,0 +1,53 @@
+---
+title: "Homework 10"
+output: md_document
+date: "2024-02-29"
+---
+
+```{r}
+source("https://tgstewart.cloud/mystery.R")
+
+mystery(12)
+```
+
+# Question 1
+> We are given that Y will be the vowel, and the want to know the probability that the location will be 3. Therefore, we are looking for P(3|y). 
+
+#Here is the table we can use to anwser the questions manually.
+```{r}
+require(dplyr)
+set.seed(223589213)
+d1 <- mystery(10000000) |> mutate(vowel = ifelse(is.na(vowel), "zMissing",vowel))
+descr::CrossTable(
+      d1$location
+    , d1$vowel
+    , prop.chisq = FALSE
+)
+```
+
+> We need the conditional column probability from this table, which is 0.100. 
+
+# Question 2
+> We are given that the location is 1 and we want to know what vowel is most likely going to be in location 1. If we look in row 1, we see that the highest conditional row prabability occurs for a, so P(a|1) = 0.39
+
+
+# Question 3
+> We can use the same stratigey as above, but instead of location 1 we are looking at location 4. Therefore, we want to know given location 4 which vowel is most likely to appear in that position. In row 4, we see e has the highest conditional row probability, so P(e|4) = 0.356. 
+
+# Question 4
+> we are looking at the marginal probability for no vowels, which os P(Inf) = 0.027
+
+# Question 5
+> We will use the margines and look for P(odd), which will equal the sum of the odd numbered rows divided by the total. P(odd) = (2674997 + 1721910 + 29459 + 546 + 94)/10000000 = 0.4427006
+
+> We can also use this code to get an anwser:
+
+```{r}
+mystery(100000) |> 
+  mutate(event = location%%2) |>
+  pull(event) |>
+  table(useNA = "always") |>
+  proportions()
+```
+
+
