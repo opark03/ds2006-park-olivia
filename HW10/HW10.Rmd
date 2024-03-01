@@ -1,6 +1,6 @@
 ---
 title: "Homework 10"
-output: md_document
+output: html_document
 date: "2024-02-29"
 ---
 
@@ -38,7 +38,7 @@ descr::CrossTable(
 > we are looking at the marginal probability for no vowels, which os P(Inf) = 0.027
 
 # Question 5
-> We will use the margines and look for P(odd), which will equal the sum of the odd numbered rows divided by the total. P(odd) = (2674997 + 1721910 + 29459 + 546 + 94)/10000000 = 0.4427006
+> We will use the margines and look for P(odd), which will equal the sum of the odd numbered rows divided by the total. P(odd) = (2674997 + 1721910 + 29459 + 546 + 94)/10000000 = 0.4427006. Therefore, It is more likley for vowels to be in an even position
 
 > We can also use this code to get an anwser:
 
