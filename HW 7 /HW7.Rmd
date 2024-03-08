@@ -1,6 +1,6 @@
 ---
 title: "HW 7"
-output: html_document
+output: md_document
 date: "2024-02-11"
 ---
 
@@ -22,6 +22,11 @@ cola_table_props <- prop.table(cola_table)
 cola_table_props
 ```
 
+| Colas                             | No Colas                           |
+|-----------------------------------|------------------------------------|
+| 20 ($\frac{20}{66} = 0.\bar{30}$) | 46 ($\frac{46}{66} = 0.\bar{69}$ ) |
+
+
 #2
 
 ```{r}
@@ -29,6 +34,10 @@ sugar_table <- table(class_data$sugar)
 sugar_table_props <- prop.table(sugar_table)
 sugar_table_props
 ```
+
+| Regular                           | Zero Sugar                        |
+|-----------------------------------|-----------------------------------|
+| 40 ($\frac{40}{66} = 0.\bar{60}$) | 26 ($\frac{26}{66} = 0.\bar{39}$) |
 
 #3
 
@@ -38,6 +47,7 @@ cont_table_props <- prop.table(cont_table)
 cont_table
 cont_table_props
 ```
+
 
 #4 & 5
 
@@ -53,3 +63,14 @@ descr::CrossTable(
 ) |>
 pander(split.table=Inf)
 ```
+
+
+|               | Colas                             | Not Colas                         | Total                             |
+|-----------------------|-----------------|-----------------|-----------------|
+| Regular       | 10 ($\frac{10}{66} = 0.\bar{15}$) | 30 ($\frac{30}{66} = 0.\bar{45}$) | 40 ($\frac{40}{66} = 0.\bar{60}$) |
+|     Row       | 10 ($\frac{10}{40} = 0.25$)       | 30 ($\frac{30}{40} = .75$)        |                                   |
+|     Col       | 10 ($\frac{10}{20} = 0.5$)        | 30 ($\frac{30}{46} = 0.6521$)     |                                   |
+| No Sugar/Diet | 10 ($\frac{10}{66} = 0.\bar{15}$) | 16 ($\frac{16}{66} = 0.\bar{24}$) | 26 ($\frac{26}{66} = 0.\bar{39}$) |
+|     Row       | 10 ($\frac{10}{26} = 0.3846$)     | 16 ($\frac{16}{26} = 0.6154$)     |                                   |
+|     Col       | 10 ($\frac{10}{20} = 0.5$)        | 16 ($\frac{16}{46} = 0.3478$)     |                                   |
+| Total         | 20 ($\frac{20}{66} = 0.\bar{30}$) | 46 ($\frac{46}{66} = 0.\bar{69}$) | 66 (1)                                 |

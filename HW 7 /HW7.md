@@ -51,6 +51,27 @@
     ## Cola (Coke, Pepsi, etc.)           Something else 
     ##                0.3030303                0.6969697
 
+<table>
+<colgroup>
+<col style="width: 49%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Colas</th>
+<th>No Colas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20 (<span class="math inline">$\frac{20}{66} =
+0.\bar{30}$</span>)</td>
+<td>46 (<span class="math inline">$\frac{46}{66} = 0.\bar{69}$</span>
+)</td>
+</tr>
+</tbody>
+</table>
+
 \#2
 
     sugar_table <- table(class_data$sugar)
@@ -60,6 +81,27 @@
     ## 
     ## Regular (full sugar)   Zero sugar or diet 
     ##            0.6060606            0.3939394
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Regular</th>
+<th>Zero Sugar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>40 (<span class="math inline">$\frac{40}{66} =
+0.\bar{60}$</span>)</td>
+<td>26 (<span class="math inline">$\frac{26}{66} =
+0.\bar{39}$</span>)</td>
+</tr>
+</tbody>
+</table>
 
 \#3
 
@@ -170,6 +212,75 @@ Total(%)</td>
 69.697%</td>
 <td style="text-align: center;">66<br />
 </td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Colas</th>
+<th>Not Colas</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regular</td>
+<td>10 (<span class="math inline">$\frac{10}{66} =
+0.\bar{15}$</span>)</td>
+<td>30 (<span class="math inline">$\frac{30}{66} =
+0.\bar{45}$</span>)</td>
+<td>40 (<span class="math inline">$\frac{40}{66} =
+0.\bar{60}$</span>)</td>
+</tr>
+<tr class="even">
+<td>    Row</td>
+<td>10 (<span class="math inline">$\frac{10}{40} = 0.25$</span>)</td>
+<td>30 (<span class="math inline">$\frac{30}{40} = .75$</span>)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>    Col</td>
+<td>10 (<span class="math inline">$\frac{10}{20} = 0.5$</span>)</td>
+<td>30 (<span class="math inline">$\frac{30}{46} = 0.6521$</span>)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>No Sugar/Diet</td>
+<td>10 (<span class="math inline">$\frac{10}{66} =
+0.\bar{15}$</span>)</td>
+<td>16 (<span class="math inline">$\frac{16}{66} =
+0.\bar{24}$</span>)</td>
+<td>26 (<span class="math inline">$\frac{26}{66} =
+0.\bar{39}$</span>)</td>
+</tr>
+<tr class="odd">
+<td>    Row</td>
+<td>10 (<span class="math inline">$\frac{10}{26} = 0.3846$</span>)</td>
+<td>16 (<span class="math inline">$\frac{16}{26} = 0.6154$</span>)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>    Col</td>
+<td>10 (<span class="math inline">$\frac{10}{20} = 0.5$</span>)</td>
+<td>16 (<span class="math inline">$\frac{16}{46} = 0.3478$</span>)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>20 (<span class="math inline">$\frac{20}{66} =
+0.\bar{30}$</span>)</td>
+<td>46 (<span class="math inline">$\frac{46}{66} =
+0.\bar{69}$</span>)</td>
+<td>66 (1)</td>
 </tr>
 </tbody>
 </table>
