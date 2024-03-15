@@ -91,6 +91,10 @@ probability
 
 ![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
+    ggplot(df_ae, aes(x = replicates, y = absolute_error, color = as.factor(probabilities))) + geom_line() +  scale_x_continuous(trans = 'log2') + scale_y_continuous(trans = 'log2') + labs(title = "Absolute Error", x = "Replicate Number",   y = "Absolute Error",  color = "Probability")
+
+![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-2.png)
+
     # Plotting relative error
     df_re <- data.frame(replicates = rep(ns, each = length(ps)),
                         relative_error = as.vector(out_re),
@@ -98,15 +102,18 @@ probability
 
     ggplot(df_re, aes(x = replicates, y = relative_error, color = as.factor(probabilities))) + geom_line() + scale_x_continuous(trans = 'log2') + labs(title = "Relative Error", x = "Replicate Number",  y = "Relative Error", color = "Probability")
 
-![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-2.png)
+![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-3.png)
 
 # Conclusion
 
 As you can see from the graphs, both absolute and relative error will
 decrease and replicate number increases for all probabilities.
 Additionally, it is evident that greater probabilities will result in a
-larger absolute error but smaller relative error. Due to my immense
-understanding of simulation error and how it changes with different
-probabilities and replicate numbers, it is clear that I am perfect for
-this position and should be hired for the job! *(AKA given an 2 on the
-assignment)*
+larger absolute error but smaller relative error. From the log2 graph,
+we can see that there is a linear relationship between absolute error
+and replicate number with a slope of -1/2. Therefore, this graph shows
+that if we quadrouple the number of replicates we can cut the absolute
+error in half. Due to my immense understanding of simulation error and
+how it changes with different probabilities and replicate numbers, it is
+clear that I am perfect for this position and should be hired for the
+job! *(AKA given an 2 on the assignment)*
