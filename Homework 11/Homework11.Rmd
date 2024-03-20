@@ -6,15 +6,15 @@ date: "2024-03-15"
 
 # 1
 
-|          |  Cancer  | Not Cancer |     |
-|:---------|:--------:|:----------:|:---:|
-| Test = + | .009,row=.04, col=.9, |    .198  , row=.96, col=.2 | .207    |
-| Test = - | .001 , row=.001, col=.1|  .792, row=.99, col=.8  | .793    |
-|          |   0.01    |     .99     |  1   |
+|          |         Cancer          |       Not Cancer       |      |
+|:---------|:-----------------------:|:----------------------:|:----:|
+| Test = + |  .009,row=.04, col=.9,  | .198 , row=.96, col=.2 | .207 |
+| Test = - | .001 , row=.001, col=.1 | .792, row=.99, col=.8  | .793 |
+|          |          0.01           |          .99           |  1   |
 
-#2 
+#2
 
-This is a conditional row probability. the probability of P(Cancer|+) = .04
+This is a conditional row probability. the probability of P(Cancer\|+) = .04
 
 #3
 
@@ -37,4 +37,3 @@ ggplot(df, aes(x = Cancer_Incidence, y = Positive_Predictive_Value)) +
        y = 'Positive Predictive Value') +
   theme_minimal()
 ```
-
