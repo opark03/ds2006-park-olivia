@@ -1,0 +1,31 @@
+---
+title: "In class 4/1"
+output: html_document
+date: "2024-04-01"
+---
+
+```{r}
+
+sample(letters, 3, replace=TRUE)
+
+# Sequence with replacement 
+draws <- replicate(1000000, sample(letters, 3, replace=TRUE) |> paste0(collapse = ""))
+mean(draws =="tom")
+
+# Sequence Without replacememt
+draws <- replicate(1000000, sample(letters, 3, replace=FALSE) |> paste0(collapse = ""))
+mean(draws =="tom")
+
+# Hand with replacement
+draws <- replicate(1000000, sample(letters, 3, replace=TRUE) |> paste0(collapse = ""))
+possibles <- c("omt", "otm", "mot", "mto", "tom", "tmo")
+table(draws %in% possibles)
+
+
+# Hand without replacement
+draws <- replicate(1000000, sample(letters, 3, replace=FALSE) |> paste0(collapse = ""))
+possibles <- c("omt", "otm", "mot", "mto", "tom", "tmo")
+table(draws %in% possibles)
+
+```
+
