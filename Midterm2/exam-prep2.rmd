@@ -1,0 +1,330 @@
+---
+title: "DS 2006 Midterm 1 Prep Questions"
+output: pdf_document
+---
+
+# NAME: **Olivia Park**
+
+**NOTE:** The `.rmd` version of the file is available here: [(link)](https://tgstewart.cloud/midterm2-prep.rmd)
+
+## Instructions
+
+Please prepare reponses/solutions for the following questions.  On the day of the exam, you will be given a new set of questions.  You will use the solutions you've prepared for this exam during the exam.  
+
+During the exam, you will also be permitted to access the internet for publicly available content.  You will not be allowed to communicate with anyone via the internet or any other means during the exam. This includes, but is not limited to: 
+
+* No messaging, emailing, or using social media to contact others. 
+* No posting questions or seeking answers on forums, chat rooms, chat bots (including large language models like ChatGPT), or any collaborative platforms. 
+* No sharing or discussing exam content with peers through any online or electronic medium.
+
+You may **NOT** discuss any aspect of the exam or prep questions with anyone other than the instructor or TA.  You may **NOT** share code or documents.
+
+## Submission instructions
+
+1.  Within your course repo, create a folder called `Midterm2`
+1.  Within the folder, create the script file `exam-prep.rmd` with your solutions.  Create a rendered report in `.pdf` output.
+1. Add, commit, and push to your repo on github.com.
+
+## Questions
+
+Exam questions are organized into sections cooresponding to the learning outcomes of the course.  
+
+### Section 1. Tools of the data scientists
+
+>Learning objective: Use the tools of data scientists
+
+>Learning objective:  Implement best programming/coding practices
+
+1.1 Write your name at the prompt above (line 6 in the script).
+
+1.2 When you are done with the exam, please render this report as a pdf document.
+
+1.3 Please explain the advantages of relative file paths over absolute file paths.
+
+Absolute file paths make it easier to share and locate files. They are more portable and can be moved around because they are not attatched to 1 specific location. They also make working with Git and GitHub to collabroate on files much easier and more accessible to users. 
+
+### Section 2. Probability
+
+>Learning objective: Compare and contrast different definitions of probability, illustrating differences with simple examples
+
+>Learning objective: Express the rules of probability verbally, mathematically, and computationally.
+
+2.1 Machines A, B, and C generate widgets with a defect rate of 0.1, 0.01, and 0.001, respectively. Machine A generates twice as many widgets as B, and machine B generates twice as many widgets as machine C. 
+
+Please complete the cross table below based on the information above.
+
+Hints:
+
+* P(A) = 2*P(B) = 4*P(B), which means P(A) = 4/7, P(B) = 2/7 and P(C) = 1/7.
+
+|            |  A  |  B  |  C  |     |
+|:-----------|:---:|:---:|:---:|:---:|
+| Defective  |     |     |     |     |
+| → cell     |.057 |.0028|.00014|.0612|
+| → row      | .950 |.0467|.0023|     |
+| → col      |.1   .01   |.001 |     |
+| Functional |     |     |     |     |
+| → cell     | .514|.283 |.1427 | .939|
+| → row      | .548|.301 |.1520 |     |
+| → col      |.9   | .99 |.999 |     |
+|            |4/7  |2/7  | 1/7 | 1   |
+
+2.2 If you did not know if a widget was functional or defective, what would be the probability that the widget is from machine A?  Write the solution using mathematical notation, as in P(???) = ???.
+
+P(WidgetA) = 4/7 = .5714
+
+2.3 How would you update the probability from 2.3 if you knew the widget was defective? Write the solution using mathematical notation, as in P(???) = ???.
+
+P(A|Defective) = .950
+
+### Section 3. Simulation
+
+>Learning objective: Use probability models to build simulations of complex real world processes to answer research questions
+
+3.1 In class and homework, you solved the birthday problem.  The script we developed in class to solve the problem is below.  Calculate the probability of a shared birthday for a class of size 20 with the code using only 30 replicates. 
+
+```{r}
+generate_class <- function(class_size){
+  sample(1:365, class_size, replace=TRUE)
+}
+
+check_birthday <- function(class){
+  class |> 
+    duplicated() |> 
+    any()
+}
+
+set.seed(230583)
+R <- 30
+replicates <- replicate(R, generate_class(20) |> check_birthday())
+mean(replicates)
+```
+
+
+3.2 Using the exact same number of replicates and class size, repeat the process of calculating the shared birthday probability 1000 times.  Create a histogram of the 1000 estimates of the probability.  The analytic solution to the birthday problem is
+
+\[
+1-\frac{365!}{365^k(365-k)!}
+\]
+
+where $k$ is the class size.  Add the analytic solution as a vertical reference line using the `abline` command.
+
+```{r}
+R <- 20
+out <- rep(NA, 1000)
+for(i in 1:length(out)){
+  replicates <- replicate(R, generate_class(20) |> check_birthday())
+  out[i] <- mean(replicates)
+}
+hist(out, breaks = 100, freq = FALSE, main = "Histogram of 1000 estimates of the shared birthday probability")
+box()
+analytic_solution <- function(k) {
+  analytic_solution <- 1 - (exp(lfactorial(365) - lfactorial(365-k)) / (365^k))
+}
+k <- 20
+analytic_prob <- analytic_solution(k)
+abline(v = analytic_prob, col = "red")
+
+#actual value of birthday(20)
+print(analytic_prob)
+
+```
+
+3.3 What is the range (min and max) of the 1000 values you generated for the birthday probability estimate?
+
+```{r}
+#min and max
+min(out)
+max(out)
+
+```
+
+3.4 What is the average absolute error of the 1000 estimates?
+
+```{r}
+absolute_error <- function(out, a_prob){
+  sum_of_error <- 0
+  for(i in 1:length(out)){
+    sum_of_error <- sum_of_error + abs(out[i] - a_prob)
+  }
+  absolute_error <- sum_of_error / length(out)
+}
+abs_err <- absolute_error(out, analytic_prob)
+
+print(abs_err)
+```
+
+3.5 If you wanted to reduced the average absolute error by half, how many replicates (R) would you need to use?
+
+To cut abosulte error in half, you can multiply R by 4. 4*20 = 80, so 80 should cut the absolute error in half. The exact solution can also be calcuated with this code: 
+
+```{r}
+
+for(i in 70:90){
+  R <- i
+  out_new <- rep(NA, 1000)
+  for(i in 1:length(out_new)){
+    replicates <- replicate(R, generate_class(20) |> check_birthday())
+    out_new[i] <- mean(replicates)
+  }
+  analytic_prob <- analytic_solution(20)
+  abs_err_new <- absolute_error(out_new, analytic_prob)
+  if(abs_err_new <= abs_err / 2){
+    print(abs_err_new)
+    print(R)
+    break
+  }
+}
+```
+
+3.6 Generate a plot of overlapping histograms to show the difference between R=30 and your R from the previous problem.
+
+```{r}
+R2 <- 80 # Change this
+out2 <- rep(NA, 1000)
+for(i in 1:length(out2)){
+  replicates <- replicate(R2, generate_class(20) |> check_birthday())
+  out2[i] <- mean(replicates)
+}
+
+bins <- seq(0,1,by = 0.01)
+hist(out, breaks = bins, col = "#ffabab50", freq = FALSE, main = "Histogram of 1000 estimates of the shared birthday probability")
+hist(out2, breaks = bins, add=TRUE, col = "#6488ea59", freq = FALSE)
+```
+
+3.7 Calculate the average absolute error of the 1000 estimates generate with the new choice of R?  Did it change as you expected it to?
+
+Here is the calculations using R=80 for absulte error. It did change as I expected as the absolute error was cut from 0.08634973 to  0.0434552.
+
+```{r}
+R <- 80
+out <- rep(NA, 1000)
+for(i in 1:length(out)){
+  replicates <- replicate(R, generate_class(20) |> check_birthday())
+  out[i] <- mean(replicates)
+}
+
+absolute_error <- function(out, a_prob){
+  sum_of_error <- 0
+  for(i in 1:length(out)){
+    sum_of_error <- sum_of_error + abs(out[i] - a_prob)
+  }
+  absolute_error <- sum_of_error / length(out)
+}
+abs_err <- absolute_error(out, analytic_prob)
+
+print(abs_err)
+
+```
+
+### Section 4. Diagnostics
+
+>Learning objective: apply cross table framework to the special case of binary outcomes
+
+4.1 Suppose the prevalence of disease X is 0.1, and you are tasked with finding a diagnostic test so that the positive predictive value is 0.95.  If the specificity of the test is 0.9, what must the sensitivity be?
+
+|          |         Cancer          |       Not Cancer       |      |
+|:---------|:-----------------------:|:----------------------:|:----:|
+| Test = + | .005 ,row= .05, col=, .05  |  .09 , row= .95, col= .1 |  | .09
+| Test = - | .095 , row=, col= .95 | .81 , row=, col= .9 |  | .91
+|          |          0.1           |          .9           |  1   |
+
+Senistivity is a conditional column probability and is P(+|C) = .05
+
+
+
+### Section 5. Confounding vs Causal Pathway
+
+>Learning objective: define/describe confounding variables, Simpson's paradox, DAGs, and the causal pathway
+
+5.1 The following function generates data from a cohort of individuals who were diagnosed with disease X.  In the dataset, there is vaccination status, disease severity, and disease duration.
+
+Generate 1000 draws from the function and create the cross table for vaccination status and disease duration.  Calculate a summary of the effect of vaccination by calculating the difference is conditional probabilities:
+
+\[
+\Delta = P(\text{Short recovery}|\text{vaccinated}) - P(\text{Short recovery}|\text{unvaccinated})
+\]
+
+```{r}
+vax_data <- function(R){
+    vs <- rbinom(R,1,.5)
+    ds <- rbinom(R,1,.25*(vs==1)+.75*(vs==0))
+    rt <- rbinom(R,1,.7*(ds==1)+.5*(ds==0))
+    data.frame(
+        vaccination_status = c("vaccinated","unvaccinated")[vs+1]
+      , disease_severity = c("mild","severe")[ds+1]
+      , recovery_time = c("short","long")[rt+1]
+    )
+}
+
+calc_delta <- function(df){
+  num_vax <- 0
+  vax_and_recov <- 0
+  
+  for(i in 1:nrow(df)){
+    if(df[i,1] == "vaccinated"){
+      num_vax <- num_vax + 1
+      if(df[i,3] == "short"){
+        vax_and_recov <- vax_and_recov + 1
+      }
+    }
+  }
+  p_short_given_vax = vax_and_recov / num_vax
+  
+  num_unvax <- 0
+  unvax_and_recov <- 0
+  
+  for(i in 1:nrow(df)){
+    if(df[i,1] == "unvaccinated"){
+      num_unvax <- num_unvax + 1
+      if(df[i,3] == "short"){
+        unvax_and_recov <- unvax_and_recov + 1
+      }
+    }
+  }
+  p_short_given_unvax = unvax_and_recov / num_unvax
+  
+  delta = p_short_given_vax - p_short_given_unvax
+}
+
+Ra <- 1000
+vax <- vax_data(Ra)
+
+print(vax)
+
+delta <- calc_delta(vax)
+print(delta)
+```
+
+
+5.2 Stratify the table by disease severity.  As in the previous problem, calculate the same treatment effect in each strata.
+
+```{r}
+
+
+dfMild <- vax[which(vax$disease_severity == "mild"),]
+
+delta_mild <- calc_delta(dfMild)
+print(delta_mild)
+
+dfSevere <- vax[which(vax$disease_severity == "severe"),]
+
+delta_severe <- calc_delta(dfSevere)
+print(delta_severe)
+
+
+```
+
+5.3 Based on the summary of the treatment effect that you observe in the combined and stratified tables, does vaccination help shorten recovery?
+
+Based on the combined table, vacciaation does not help shorten recovery. Based on the combined tables, it seems as though vaccination can help if the disease is severe but not if it is a mild case. 
+
+5.4 Which measure of treatment effect is most persuasive?  The combined estimate or the stratified estimates?  Which estimate should you rely on?  Explain why, creating a DAG to represent relationship between the variables.
+
+The most persuasive measure is the startified data because it shows that vaccination has a different impact on recovery. Therefore, we should rely on the stratified treatment effect estimate rather than the unstratified data. 
+
+Vaccination Status (V) --> Disease Severity (D) --> Recovery Time (R)
+            |
+            +-----------------------------------------------> Recovery Time (R)
+
+
