@@ -67,7 +67,7 @@ one_play <- function(previous_ledger_entry, max_wager){
 ```
 
 ## Process: Stopping Rule
-> This functions takes into consideration the ending budget, which can either reach 0 or the winning threshold, and the maximum number of games that can be played. We Will include this function into the following function to ensure the rounds stop when one of these parameters is reached. 
+> This functions takes into consideration the ending budget, which can either reach 0 or the winning threshold, and the maximum number of games that can be played. We will include this function into the following function to ensure the rounds stop when one of these parameters is reached. 
 
 ```{r}
 stopping_rule <- function(
@@ -138,7 +138,11 @@ for(r in 1:R){
     profit()
 }
 
-plot(output, type = "l", main = "Profits Over Series of Games", xlab = "Game Index", ylab = "Profit")
+# Average profit over a series of games
+
+average_profit <- output |> mean()
+print(average_profit)
+
 ```
 
 ## Property: Example Looser and Winner
@@ -162,7 +166,7 @@ plot(l2[,c(1,5)], type = "l", lwd = 5, xlab = "Game Index", ylab = "Budget", mai
 ```
 
 ## Changing A Parameter: Average Profit as a function of Winning Threshold
-> what happens when we change a parameter? The code below uses the simulation processes from above and alters it so that we can see how changing the winning threshold parameter changes the averge profit. This code calcuates the average profit at a number of winning tresholds while leaving the other parameters constant. As we can see in the graph, profit decreases overall as our desire to leave with more money increases. Also note that this code is very inefficient so creating the graoh from all of the individual points is a slow process.
+> What happens when we change a parameter? The code below uses the simulation processes from above and alters it so that we can see how changing the winning threshold parameter changes the averge profit. This code calcuates the average profit at a number of winning tresholds while leaving the other parameters constant. As we can see in the graph, profit decreases overall as our desire to leave with more money increases. Also note that this code is very inefficient so creating the graoh from all of the individual points is a slow process.
 
 ```{r}
 
@@ -172,7 +176,7 @@ max_wager <- 100
 
 winning_thresholds <- seq(100, 500, by = 50)
 
-# used to keep each individual profit calculation based on wager
+# used to keep each individual profit calculation based on wager - added the mean to show average across games
 average_profits <- numeric(length(winning_thresholds))
 
 # modify code from above to produce an output that we can graph
@@ -190,7 +194,7 @@ graph_info <- data.frame(
     Average_Profit = average_profits
 )
 
-plot(graph_info$Winning_Threshold, graph_info$Average_Profit, type = "l", lwd = 5, xlab = "winning treshold", ylab = "average profit", main = "how does average profit change as a function of winning treshold?") 
+plot(graph_info$Winning_Threshold, graph_info$Average_Profit, type = "l", lwd = 5, xlab = "Winning Treshold", ylab = "Average Profit", main = "How Does Average Profit Change as a Function of winning Treshold?") 
 
 ```
 
@@ -238,6 +242,8 @@ ng <- 0*sb
 for(i in 1:length(sb)){
  ng[i] <- replicate(5000, one_series(100,sb[i],sb[i] +100,50) |> nrow()) |> mean()
 }
+
+replicate(1000, one_series(1000, 200, 300, 100) |> nrow()) |> mean()
 
 plot(sb, ng, type = "l", xlab = "Starting Budget", ylab="Average Number of Games", main = "Average Number of Games Played Before Stopping at each Starting Budget")
 
