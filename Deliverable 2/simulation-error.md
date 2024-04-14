@@ -21,7 +21,7 @@ simulations cannot perfectly predict human action. Following the example
 of consumer amounts, a simulation would fail if a tick-tock trend
 quickly emerged and made an activity or product trendy.
 
-## Concepts Averview
+## Concepts Overview
 
 The first two important vocabulary terms to discuss are **probability**
 and **estimated probability**. Probability is true the likelihood that
@@ -50,10 +50,11 @@ error changes with sample size number for each probability and one that
 shows how relative error changes with sample size number for each
 probability
 
-    # Step 1: calculate estamited probability, absolute error, and relative error
+    # Step 1: calculate estimated probability, absolute error, and relative error
     error_v4 <- function(r,n,p){
       d1 <- rbinom(r,n,p)
       phat <- d1/n
+    # absolute error = measured value - actual value 
       ae <- abs(phat-p)
       re <- ae/p
       c(mean(ae), mean(re))
@@ -87,11 +88,11 @@ probability
                         absolute_error = as.vector(out_ae),
                         probabilities = rep(ps, length(ns)))
 
-    ggplot(df_ae, aes(x = replicates, y = absolute_error, color = as.factor(probabilities))) + geom_line() +  scale_x_continuous(trans = 'log2') +  labs(title = "Absolute Error", x = "Replicate Number",   y = "Absolute Error",  color = "Probability")
+    ggplot(df_ae, aes(x = replicates, y = absolute_error, color = as.factor(probabilities))) + geom_line() +  scale_x_continuous(trans = 'log2') +  labs(title = "Absolute Error", x = "Replicate Number (log 2 scale)",   y = "Absolute Error",  color = "Probability")
 
 ![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
-    ggplot(df_ae, aes(x = replicates, y = absolute_error, color = as.factor(probabilities))) + geom_line() +  scale_x_continuous(trans = 'log2') + scale_y_continuous(trans = 'log2') + labs(title = "Absolute Error", x = "Replicate Number",   y = "Absolute Error",  color = "Probability")
+    ggplot(df_ae, aes(x = replicates, y = absolute_error, color = as.factor(probabilities))) + geom_line() +  scale_x_continuous(trans = 'log2') + scale_y_continuous(trans = 'log2') + labs(title = "Absolute Error", x = "Replicate Number (log2 scale)",   y = "Absolute Error (log2 scale)",  color = "Probability")
 
 ![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-2.png)
 
@@ -100,9 +101,26 @@ probability
                         relative_error = as.vector(out_re),
                         probabilities = rep(ps, length(ns)))
 
-    ggplot(df_re, aes(x = replicates, y = relative_error, color = as.factor(probabilities))) + geom_line() + scale_x_continuous(trans = 'log2') + labs(title = "Relative Error", x = "Replicate Number",  y = "Relative Error", color = "Probability")
+    ggplot(df_re, aes(x = replicates, y = relative_error, color = as.factor(probabilities))) + geom_line() + scale_x_continuous(trans = 'log2') + labs(title = "Relative Error", x = "Replicate Number (log2 scale)",  y = "Relative Error", color = "Probability")
 
 ![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-3.png)
+
+    ggplot(df_re, aes(x = replicates, y = relative_error, color = as.factor(probabilities))) + geom_line() + scale_x_continuous(trans = 'log2') + scale_y_continuous(trans = 'log2') + labs(title = "Relative Error", x = "Replicate Number (log2 scale)",  y = "Relative Error (Log2 scale)", color = "Probability")
+
+![](simulation-error_files/figure-markdown_strict/unnamed-chunk-2-4.png)
+
+# Magnitude of Absolute and Relavtive Error Explanation:
+
+When looking at the log2 graphs of both absolute error and relative
+error, we can see that the probabilities flip. With absolute error,
+error increases as p increases, whereas with relative error decreases as
+p increases. If we examine the mathematical formulas, this makes sense
+because absolute error = estimated probability - actual probability, and
+since the variance of a proportion is p\*(1-p), a higher p will result
+in higher variance. For example, if p=.5 then variance = .25, and if
+p=.01 then variance = .0019 Relative probability divides the absolute
+error by the actual probability, and since the actual probability is in
+the denominator a higher value will result in a lower relative error.
 
 # Conclusion
 
