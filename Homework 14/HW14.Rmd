@@ -48,7 +48,7 @@ simulate <- function(k, p_A){
 }
 
 # 6 
-
+ 
 rsimulate <- function(R, k, p_A){
  o <- rep(NA, R) 
  n <- rep(NA, R) 
