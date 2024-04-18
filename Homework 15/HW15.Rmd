@@ -1,0 +1,121 @@
+---
+title: "Homework 15"
+output: html_document
+date: "2024-04-15"
+---
+
+# 1. The probability of completing a difficult PhD program is 0.7. Calculate the probability that in a cohort of 29 students, 3 or fewer students do not complete the degree.
+
+mathematical solution:
+
+(29 3)(.3)\^3 (.7)\^26 = P(exactly 3 DNF)
+
+repeat for
+
+2: 1: 0:
+
+```{r}
+pbinom(3, 29, .3)
+```
+
+# 2. Let X be the number of students who complete a difficult PhD program in a cohort of 29 students. Generate a plot of the probability mass function and cumulative probability function for X. Let p = .7 , as in the previous problem.
+
+```{r}
+
+# Probability Mass Function: 
+x <- seq(0, 29, 1)
+probability_mass_function <- dbinom(x, 29, .7)
+
+plot(x, probability_mass_function)
+
+
+# Cumulative Mass Function: 
+x <- seq(0, 29, 1)
+cumulative_mass_function <- pbinom(x, 29, .7)
+
+plot(x, cumulative_mass_function)
+
+```
+
+# 3. Suppose was unknown and needed to be estimated from data. Suppose 22 completed in a cohort of 29.
+
+# 4. Estimate p with Maximum Likelihood. Generate a 1/20 support interval.
+
+calculate an interval that determines uncertianty
+
+support interval : choose a value of k why determining where graph interesections interval on the left and right
+
+1/20 support interval where k = 0.05:
+
+![screenshot from desmos](Q4.png)
+
+
+```{r}
+
+
+# in this case, x is known and p is unknown
+# mathematical: likley hood function for binomial random variable: L(p) = dbinom(x=22, N=29), p) domain for p is (0:1)
+# normalize likleyhood for max is always greater than 1: L(p) = dbinom(x=22, N=29), p)/C
+# calculate an interval that determines uncertianty
+
+curve(dbinom(22, 29, x)/dbinom(22,29, 22/29), 0, 1)
+
+# another method: 
+
+p <- seq(0,1,by=0.01)
+e <- dbinom(22, 29, p)/dbinom(22, 29, 22/29)
+
+plot(p,e)
+  
+```
+
+# 5. Esimate p  was a Bayesian Posterior. Generate a 0.95 credible interval.
+
+We must identify prior beliefs to generate posterior - change d until 95% of interval is inside posterior. 
+
+![screenshot from desmos](Q5.png)
+
+# 6. In this difficult program, students complete the degree after 5 years (no variation). A professor decides to stop taking new students after advising 10 students to completion. She also decides to retire after all of her active students graduate. If the professor only takes 1 student a year (at the start of the program), what is the probability that the professor will be retired in 20 years?
+
+- find point where cumsum = 10 (10 students sucessfully complete)
+- negative binomial where we have a predetermined number of successes and want to know the humber of trials 
+- will the cumulative sum be 10 before year 15? 
+
+
+```{r}
+
+# Simulation: 
+
+y <- replicate(5000, {
+x <- rbinom(100, 1 , 0.7) 
+which(cumsum(x) == 10)[1] + 4
+})
+# visualize distribution 
+hist(y, breaks=100)
+table(y) |> proportions()
+# add up all the times they retire before 20 years and average: 
+mean(y<=20)
+
+# negative binom: use number of failures by kth success
+# (number of times, stopping rule, probability of success) 
+rnbinom(20000, 10, 0.7) 
+# total number of students is z+ 10 and will graduate in 4 years: below gives year of retirment 
+y2 <- rnbinom(20000, 10, 0.7) + 10 + 4
+hist(y2, breaks=100)
+
+# mathamatical: 
+# P(x<= 20) = p(z+10+4 <= 20) = P(z<=6) 
+# use pnbinom to get cumulative left hand probability:
+pnbinom(6, 10, 0.7)
+```
+# 7. 3 prizes are awarded to the first 3 correct solutions of a difficult problem. Suppose the probability of a correct solution is 0.1. What is the probability that all three prizes will be awarded by the 25th submission?
+
+```{r}
+# P(3rd price <= 25) = P(F+3 <= 25) = P(F <= 22)
+pnbinom(22, 3, .1)
+
+```
+
+
+
+
