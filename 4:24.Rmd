@@ -1,0 +1,44 @@
+---
+title: "Example from Class"
+output: html_document
+date: "2024-04-24"
+---
+
+```{r}
+
+d1 <- MASS::birthwt
+
+hist(d1$bwt, freq= FALSE, breaks=20)
+curve(dnorm(x, mean(d1$bwt), sd(d1$bwt)), add=TRUE, col = "red", lwd = 6)
+
+plot(ecdf(d1$bwt))
+curve(pnorm(x, mean(d1$bwt), sd(d1$bwt)), add=TRUE, col = "red", lwd = 6)
+
+require(dplyr)
+bwt_smokers <- d1 %>%
+  filter(smoke == 1)%>%
+  pull(bwt) 
+
+library(dplyr)
+# disply difference based on birthweights - conditional distributions
+
+bwt_nonsmokers <- d1 %>%
+  filter(smoke == 0)%>%
+  pull(bwt) 
+
+# use a eCDF curve
+plot(ecdf(bwt_smokers), add = TRUE, col = "green")
+curve(pnorm(x, mean(bwt_smokers), sd(bwt_smokers)), add = TRUE, col = "red")
+
+plot(ecdf(bwt_nonsmokers), add = TRUE)
+curve(pnorm(x, mean(bwt_smokers), sd(bwt_smokers)), add = TRUE, col = "blue")
+
+# use histograms
+
+hist(bwt_smokers, freq = FALSE, breaks = 20)
+curve(dnorm(x, mean(bwt_smokers), sd(bwt_smokers)), add = TRUE)
+
+hist(bwt_nonsmokers, freq = FALSE, breaks = 20, add = TRUE)
+curve(dnorm(x, mean(bwt_nonsmokers), sd(bwt_nonsmokers)), add = TRUE)
+
+```
